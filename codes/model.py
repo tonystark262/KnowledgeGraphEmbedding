@@ -109,8 +109,8 @@ class KGEModel(nn.Module):
             batch_size, negative_sample_size = head_part.size(0), head_part.size(1)
 
             print('head-batch')
-            print('tail part {}'.format(tail_part))
-            print('head part {}'.format(head_part))
+            print('tail part {}'.format(tail_part.size()))
+            print('head part {}'.format(head_part.size()))
             
             head = torch.index_select(
                 self.entity_embedding, 
@@ -130,17 +130,17 @@ class KGEModel(nn.Module):
                 index=tail_part[:, 2]
             ).unsqueeze(1)
 
-            print('head {}'.format(head))
-            print('tail {}'.format(tail))
-            print('relation {}'.format(relation))
+            print('head {}'.format(head.size()))
+            print('tail {}'.format(tail.size()))
+            print('relation {}'.format(relation.size()))
             
         elif mode == 'tail-batch':
             head_part, tail_part = sample
             batch_size, negative_sample_size = tail_part.size(0), tail_part.size(1)
 
             print('tail-batch')
-            print('tail part {}'.format(tail_part))
-            print('head part {}'.format(head_part))
+            print('tail part {}'.format(tail_part.size()))
+            print('head part {}'.format(head_part.size()))
             
             head = torch.index_select(
                 self.entity_embedding, 
@@ -160,9 +160,9 @@ class KGEModel(nn.Module):
                 index=tail_part.view(-1)
             ).view(batch_size, negative_sample_size, -1)
 
-            print('head {}'.format(head))
-            print('tail {}'.format(tail))
-            print('relation {}'.format(relation))
+            print('head {}'.format(head.size()))
+            print('tail {}'.format(tail.size()))
+            print('relation {}'.format(relation.size()))
             
         else:
             raise ValueError('mode %s not supported' % mode)
