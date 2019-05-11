@@ -182,7 +182,7 @@ class KGEModel(nn.Module):
         
         if self.model_name in model_func:
             score = model_func[self.model_name](head, relation, tail, mode)
-            print('score {}'.format(score))
+            print('score {}'.format(score.size()))
         else:
             raise ValueError('model %s not supported' % self.model_name)
         
