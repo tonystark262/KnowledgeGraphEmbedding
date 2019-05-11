@@ -55,9 +55,14 @@ class KGEModel(nn.Module):
             b=self.embedding_range.item()
         )
 
+        print('entity dim'.format(self.entity_dim))
+        print('relation dim'.format(self.relation_dim))
         print('entity embedding')
-        print(self.entity_embedding)
-        print(type(self.entity_embedding))
+        print(self.entity_embedding.size())
+
+        print('relation embedding')
+        print(self.relation_embedding.size())
+        
         
         if model_name == 'pRotatE':
             self.modulus = nn.Parameter(torch.Tensor([[0.5 * self.embedding_range.item()]]))
