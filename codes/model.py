@@ -54,6 +54,10 @@ class KGEModel(nn.Module):
             a=-self.embedding_range.item(), 
             b=self.embedding_range.item()
         )
+
+        print('entity embedding')
+        print(self.entity_embedding)
+        print(type(self.entity_embedding))
         
         if model_name == 'pRotatE':
             self.modulus = nn.Parameter(torch.Tensor([[0.5 * self.embedding_range.item()]]))
@@ -103,6 +107,10 @@ class KGEModel(nn.Module):
         elif mode == 'head-batch':
             tail_part, head_part = sample
             batch_size, negative_sample_size = head_part.size(0), head_part.size(1)
+
+            print('head-batch')
+            print('tail part {}'.format(tail_part))
+            print('head part {}'.format(head_part))
             
             head = torch.index_select(
                 self.entity_embedding, 
@@ -121,10 +129,18 @@ class KGEModel(nn.Module):
                 dim=0, 
                 index=tail_part[:, 2]
             ).unsqueeze(1)
+
+            print('head {}'.format(head))
+            print('tail {}'.format(tail))
+            print('relation {}'.format(relation))
             
         elif mode == 'tail-batch':
             head_part, tail_part = sample
             batch_size, negative_sample_size = tail_part.size(0), tail_part.size(1)
+
+            print('tail-batch')
+            print('tail part {}'.format(tail_part))
+            print('head part {}'.format(head_part))
             
             head = torch.index_select(
                 self.entity_embedding, 
@@ -143,6 +159,10 @@ class KGEModel(nn.Module):
                 dim=0, 
                 index=tail_part.view(-1)
             ).view(batch_size, negative_sample_size, -1)
+
+            print('head {}'.format(head))
+            print('tail {}'.format(tail))
+            print('relation {}'.format(relation))
             
         else:
             raise ValueError('mode %s not supported' % mode)
@@ -157,6 +177,7 @@ class KGEModel(nn.Module):
         
         if self.model_name in model_func:
             score = model_func[self.model_name](head, relation, tail, mode)
+            print('score {}'.format(score))
         else:
             raise ValueError('model %s not supported' % self.model_name)
         
